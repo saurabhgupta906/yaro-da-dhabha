@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yaaro Da Dhaba & Cafe</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Noto+Sans+Devanagari:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --saffron:    #FF6600;
+  --orange:     #FF8C00;
+  --turmeric:   #F5A623;
+  --gold:       #D4AF37;
+  --marigold:   #FFC107;
+  --chai:       #6B3410;
+  --chai-light: #B5722A;
+  --deep-red:   #7A1515;
+  --cream:      #FFF8E7;
+  --parchment:  #F4E8C1;
+  --dark-bg:    #0E0400;
+  --smoke:      #1C0800;
+  --leaf:       #2E7D32;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #0A0200;
+  font-family: 'Crimson Text', Georgia, serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ═════════════════════════════
+   A4 PAGE BASE
+═════════════════════════════ */
+.page {
+  width: 210mm;
+  height: 297mm;
+  margin: 8px auto;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  break-after: page;
+}
+
+@media print {
+  body { background: none; }
+  .page { margin: 0; }
+  @page { size: A4; margin: 0; }
+}
+@media screen {
+  .page { box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
+}
+
+/* ═════════════════════════════════════════════
+   ████  COVER PAGE  ████
+═════════════════════════════════════════════ */
+.cover {
+  background:
+    radial-gradient(ellipse 110% 55% at 50% 0%, #3A1200 0%, transparent 65%),
+    linear-gradient(175deg, #1A0600 0%, #0E0300 40%, #1C0A00 70%, #0A0200 100%);
+}
+
+/* Sun glow */
+.sun {
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 72mm;
+  height: 72mm;
+  border-radius: 50%;
+  background: radial-gradient(circle, #FFAA00 0%, #FF6600 32%, #CC3300 58%, transparent 74%);
+  box-shadow:
+    0 0 50px 20px rgba(255,120,0,0.5),
+    0 0 100px 50px rgba(200,60,0,0.22);
+  z-index: 1;
+}
+.sun::before {
+  content:'';
+  position:absolute;
+  inset:-14px;
+  border-radius:50%;
+  border:1.5px solid rgba(255,150,0,0.22);
+}
+.sun::after {
+  content:'';
+  position:absolute;
+  inset:-28px;
+  border-radius:50%;
+  border:1px solid rgba(255,140,0,0.1);
+}
+
+/* Ghat silhouette */
+.ghats-wrap {
+  position: absolute;
+  bottom: 68mm;
+  left: 0; right: 0;
+  height: 88mm;
+  z-index: 2;
+}
+.ghats-wrap svg { width: 100%; height: 100%; }
+
+/* Ganga water */
+.ganga {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 70mm;
+  z-index: 3;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(6,20,45,0.75) 22%,
+    #040D1E 55%,
+    #020810 100%);
+}
+.ganga-sheen {
+  position: absolute;
+  top: 6mm; left: 0; right: 0;
+  height: 20mm;
+  background: radial-gradient(ellipse 65% 100% at 50% 0%,
+    rgba(255,120,0,0.2) 0%, transparent 80%);
+}
+.ripple {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,140,0,0.18) 20%,
+    rgba(255,165,0,0.38) 50%,
+    rgba(255,140,0,0.18) 80%,
+    transparent 100%);
+  animation: rwave 4s ease-in-out infinite alternate;
+}
+.r1 { top: 13mm; left: 5%;  right: 5%; }
+.r2 { top: 20mm; left: 12%; right: 12%; animation-delay: 1.2s; opacity: 0.6; }
+.r3 { top: 27mm; left: 22%; right: 22%; animation-delay: 2.4s; opacity: 0.35; }
+@keyframes rwave {
+  0%   { transform: scaleX(0.94) translateX(-5px); }
+  100% { transform: scaleX(1.06) translateX(5px); }
+}
+
+/* Diyas */
+.diya-row {
+  position: absolute;
+  bottom: 11mm;
+  left: 0; right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6.5mm;
+  z-index: 6;
+}
+.di {
+  font-size: 24px;
+  animation: dpulse 2.5s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 7px rgba(255,140,0,0.9));
+}
+.di:nth-child(even)   { animation-delay: 0.7s; font-size: 19px; }
+.di:nth-child(3n+1)   { animation-delay: 1.5s; font-size: 21px; }
+@keyframes dpulse {
+  0%   { opacity: 0.72; transform: translateY(0); }
+  100% { opacity: 1;    transform: translateY(-4px); }
+}
+
+/* Gold borders */
+.cov-border-out { position:absolute; inset:5mm;   border:2.5px solid var(--gold);              z-index:10; pointer-events:none; }
+.cov-border-in  { position:absolute; inset:8.5mm; border:1px   solid rgba(212,175,55,0.32); z-index:10; pointer-events:none; }
+
+/* Corner ornaments */
+.corn { position:absolute; width:22mm; height:22mm; z-index:12; pointer-events:none; }
+.corn svg { width:100%; height:100%; }
+.ctlo { top:5mm;    left:5mm;  }
+.ctro { top:5mm;    right:5mm; transform:scaleX(-1); }
+.cblo { bottom:5mm; left:5mm;  transform:scaleY(-1); }
+.cbro { bottom:5mm; right:5mm; transform:scale(-1,-1); }
+
+/* Garland bands */
+.garland {
+  position:absolute;
+  left:12mm; right:12mm;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:1.5mm;
+  z-index:11;
+  pointer-events:none;
+  font-size:12px;
+}
+.gt { top:10.5mm; }
+.gb { bottom:10.5mm; }
+
+/* Cover text */
+.cov-content {
+  position:absolute;
+  inset:0;
+  z-index:8;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  padding-top:12mm;
+  text-align:center;
+}
+
+/* LOGO — big, centered */
+.cov-logo {
+  width: 85mm;
+  height: 85mm;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4.5px solid var(--gold);
+  box-shadow:
+    0 0 0 9px rgba(212,175,55,0.1),
+    0 0 45px rgba(255,120,0,0.65),
+    0 0 90px rgba(212,175,55,0.3);
+  margin-bottom: 5mm;
+  flex-shrink: 0;
+}
+.cov-logo img { width:100%; height:100%; object-fit:cover; }
+
+.cov-kashi {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--turmeric);
+  letter-spacing: 5px;
+  margin-bottom: 3mm;
+}
+
+.jdiv {
+  display:flex; align-items:center; gap:4mm;
+  width:155mm; margin:2mm 0;
+}
+.jdiv-line { flex:1; height:1.5px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+.jdiv-icon { font-size:18px; filter:drop-shadow(0 0 5px rgba(212,175,55,0.6)); }
+
+.cov-yaaro {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 104px;
+  line-height: 0.85;
+  color: var(--gold);
+  letter-spacing: 10px;
+  text-shadow: 0 0 50px rgba(212,175,55,0.7), 0 4px 20px rgba(0,0,0,0.9);
+}
+.cov-dadhaba {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 60px;
+  font-weight: 900;
+  line-height: 1.05;
+  color: var(--saffron);
+  text-shadow: 0 0 35px rgba(255,100,0,0.75), 0 3px 14px rgba(0,0,0,0.9);
+  margin: 1mm 0;
+}
+.cov-andcafe {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 34px;
+  letter-spacing: 16px;
+  color: var(--cream);
+  text-shadow: 0 2px 14px rgba(0,0,0,0.9);
+  margin-top: 1mm;
+}
+
+.cov-tagline {
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
+  font-size: 14.5px;
+  color: rgba(198,134,66,0.95);
+  line-height: 1.85;
+  margin-top: 4mm;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+}
+
+.cov-badges {
+  margin-top: 5mm;
+  display: flex; gap: 5mm; align-items: center;
+}
+.cov-badge {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 12px; font-weight: 700;
+  color: rgba(212,175,55,0.88);
+  letter-spacing: 1px;
+}
+.cov-dot { width:4px; height:4px; border-radius:50%; background:var(--saffron); }
+
+
+/* ═════════════════════════════════════════════
+   ████  MENU PAGES  ████
+═════════════════════════════════════════════ */
+.menupage { background: var(--parchment); }
+
+/* parchment texture */
+.menupage::before {
+  content:''; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse at top left,    rgba(100,50,5,0.14) 0%, transparent 55%),
+    radial-gradient(ellipse at bottom right, rgba(100,50,5,0.14) 0%, transparent 55%),
+    radial-gradient(ellipse at top right,   rgba(80,40,0,0.08) 0%, transparent 45%),
+    radial-gradient(ellipse at bottom left, rgba(80,40,0,0.08) 0%, transparent 45%);
+}
+
+/* Menu border */
+.mfrm { position:absolute; inset:5mm; border:2.5px solid var(--saffron); z-index:1; pointer-events:none; }
+.mfrm::before { content:''; position:absolute; inset:3.5px; border:1px solid rgba(245,166,35,0.45); }
+
+/* Menu corner */
+.mc { position:absolute; width:20mm; height:20mm; z-index:12; pointer-events:none; }
+.mc svg { width:100%; height:100%; }
+.mctl { top:5mm;    left:5mm; }
+.mctr { top:5mm;    right:5mm;  transform:scaleX(-1); }
+.mcbl { bottom:5mm; left:5mm;  transform:scaleY(-1); }
+.mcbr { bottom:5mm; right:5mm; transform:scale(-1,-1); }
+
+/* Page inner */
+.pg { position:relative; z-index:2; padding:18mm 15mm 15mm; }
+
+/* Page header */
+.pgh {
+  display:flex; align-items:center; justify-content:space-between;
+  padding-bottom:3.5mm; margin-bottom:4mm;
+  border-bottom:2.5px solid var(--saffron);
+}
+.pgh-logo { width:14mm; height:14mm; border-radius:50%; overflow:hidden; border:2px solid var(--gold); flex-shrink:0; }
+.pgh-logo img { width:100%; height:100%; object-fit:cover; }
+.pgh-name { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:3px; color:var(--chai); }
+.pgh-sub  { font-family:'Noto Sans Devanagari',sans-serif; font-size:12px; font-weight:700; color:var(--saffron); }
+.pgh-r    { font-family:'Crimson Text',serif; font-style:italic; font-size:11px; color:var(--chai-light); text-align:right; }
+
+/* Section block */
+.sec { margin-bottom:5mm; }
+
+/* Section ribbon header */
+.shead {
+  position:relative;
+  display:flex; align-items:center;
+  background:linear-gradient(135deg, #7A1515 0%, #9A3A20 42%, #6B3410 100%);
+  padding:7px 14px 7px 52px;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%,8px 50%);
+  margin-bottom:4px;
+}
+.shead::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:7px; background:var(--saffron);
+}
+
+/* BIG icon — very visible */
+.sicon {
+  position:absolute; left:10px; top:50%; transform:translateY(-50%);
+  font-size:30px; line-height:1;
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.55));
+}
+
+.sen  { font-family:'Bebas Neue',sans-serif; font-size:21px; letter-spacing:2.5px; color:#FFFFFF; text-shadow:0 1px 4px rgba(0,0,0,0.5); }
+.shi  { font-family:'Noto Sans Devanagari',sans-serif; font-size:14px; font-weight:700; color:#FFD555; text-shadow:0 1px 3px rgba(0,0,0,0.65); line-height:1.3; }
+.spl  { margin-left:auto; font-family:'Crimson Text',serif; font-style:italic; font-size:11px; color:var(--marigold); white-space:nowrap; padding-left:6px; }
+
+.sline { height:2px; background:linear-gradient(90deg,var(--saffron) 0%,var(--turmeric) 35%,transparent 80%); margin-bottom:4px; }
+
+/* Items */
+.items { padding:0 2mm; }
+.mi {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  gap:4mm; padding:3.5px 0;
+  border-bottom:1px dashed rgba(107,52,16,0.2);
+}
+.mil { display:flex; align-items:flex-start; gap:6px; flex:1; min-width:0; }
+.vdot {
+  width:12px; height:12px; min-width:12px;
+  border:2px solid var(--leaf); border-radius:2px;
+  margin-top:3px;
+  display:flex; align-items:center; justify-content:center;
+}
+.vdot::after { content:''; width:5px; height:5px; background:var(--leaf); border-radius:50%; }
+.mname { font-family:'Crimson Text',serif; font-size:15px; font-weight:600; color:#1C0800; line-height:1.3; }
+.mdesc { font-family:'Crimson Text',serif; font-style:italic; font-size:11px; color:var(--chai-light); line-height:1.3; }
+.mprice{ font-family:'Bebas Neue',sans-serif; font-size:16px; color:var(--deep-red); white-space:nowrap; letter-spacing:0.5px; }
+.bdg {
+  display:inline-block; background:var(--saffron); color:#fff;
+  font-size:8px; padding:2px 5px; border-radius:8px;
+  font-family:'Bebas Neue',sans-serif; letter-spacing:1px;
+  margin-left:5px; vertical-align:middle;
+}
+.bdg.g { background:var(--gold); color:#3A1200; }
+.bdg.gr{ background:#1E7A1E; }
+
+/* 2-col grid */
+.twoc { display:grid; grid-template-columns:1fr 1fr; gap:0 6mm; }
+.colh { font-family:'Noto Sans Devanagari',sans-serif; font-size:11px; font-weight:700; color:var(--chai-light); padding:2px 0; border-bottom:1px solid rgba(212,175,55,0.35); margin-bottom:2px; }
+
+/* Page footer */
+.pgfoot {
+  position:absolute; bottom:9mm; left:15mm; right:15mm;
+  display:flex; align-items:center; justify-content:space-between;
+  border-top:1px solid rgba(107,52,16,0.25); padding-top:2.5mm; z-index:3;
+}
+.pft { font-family:'Noto Sans Devanagari',sans-serif; font-size:10.5px; font-weight:700; color:var(--chai); }
+.pfdots { display:flex; gap:4px; }
+.pfd { width:6px; height:6px; border-radius:50%; }
+.pd1{background:var(--saffron);} .pd2{background:var(--turmeric);} .pd3{background:var(--marigold);}
+
+/* Closing box */
+.closebox {
+  margin-top:5mm; padding:4.5mm 5mm 4mm;
+  border:1.5px solid rgba(212,175,55,0.4);
+  background:rgba(255,107,0,0.05); border-radius:4px; text-align:center;
+}
+.cbhi   { font-family:'Noto Sans Devanagari',sans-serif; font-size:16px; font-weight:900; color:var(--saffron); margin-bottom:2mm; }
+.cbq    { font-family:'Crimson Text',serif; font-style:italic; font-size:13px; color:var(--chai); line-height:1.7; }
+.cbtag  { font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:2px; color:var(--chai-light); margin-top:2.5mm; }
+
+</style>
+</head>
+<body>
+
+<!-- ████████████████████████████████████
+     PAGE 1 — COVER / FRONT PAGE
+████████████████████████████████████ -->
+<div class="page cover">
+
+  <div class="sun"></div>
+
+  <!-- Varanasi Ghat Silhouette -->
+  <div class="ghats-wrap">
+    <svg viewBox="0 0 794 340" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+      <!-- Background fill -->
+      <rect y="200" width="794" height="140" fill="#0E0400"/>
+      <!-- Far background spires -->
+      <g fill="#1C0900" opacity="0.5">
+        <rect x="55"  y="158" width="7" height="182"/><polygon points="58,146 61,158 55,158"/>
+        <rect x="145" y="168" width="9" height="172"/><polygon points="149,156 153,168 145,168"/>
+        <rect x="230" y="160" width="8" height="180"/><polygon points="234,148 238,160 230,160"/>
+        <rect x="538" y="163" width="8" height="177"/><polygon points="542,151 546,163 538,163"/>
+        <rect x="628" y="168" width="9" height="172"/><polygon points="632,156 636,168 628,168"/>
+        <rect x="725" y="155" width="7" height="185"/><polygon points="728,143 732,155 725,155"/>
+      </g>
+      <!-- Left ghat cluster -->
+      <g fill="#1E0A00" opacity="0.78">
+        <rect x="0" y="178" width="138" height="162"/>
+        <rect x="7"  y="145" width="20" height="195"/><rect x="13" y="128" width="8" height="212"/>
+        <polygon points="17,114 22,128 12,128" fill="#280D00"/><circle cx="17" cy="111" r="5" fill="#280D00"/>
+        <rect x="34" y="155" width="15" height="185"/><rect x="54" y="165" width="22" height="175"/>
+        <rect x="61" y="149" width="8" height="191"/>
+        <polygon points="65,137 69,149 61,149" fill="#280D00"/>
+        <rect x="88" y="172" width="42" height="168"/>
+        <rect x="0"   y="216" width="138" height="7" fill="#260C00"/>
+        <rect x="0"   y="223" width="138" height="6" fill="#220A00"/>
+        <rect x="0"   y="229" width="138" height="6" fill="#1E0900"/>
+        <rect x="0"   y="235" width="138" height="5" fill="#1A0800"/>
+        <rect x="0"   y="240" width="138" height="5" fill="#160600"/>
+      </g>
+      <!-- Center main temple complex -->
+      <g fill="#220C00">
+        <rect x="238" y="152" width="318" height="188"/>
+        <!-- Tallest center tower -->
+        <rect x="366" y="76"  width="30" height="264"/>
+        <polygon points="381,56 391,76 371,76" fill="#2E1000"/>
+        <circle cx="381" cy="53" r="8" fill="#FF6600" opacity="0.95"/>
+        <circle cx="381" cy="53" r="13" fill="none" stroke="rgba(255,150,0,0.3)" stroke-width="1.5"/>
+        <!-- 2nd right -->
+        <rect x="412" y="92"  width="24" height="248"/>
+        <polygon points="424,74 433,92 415,92" fill="#2E1000"/>
+        <circle cx="424" cy="71" r="6" fill="#FF8C00" opacity="0.85"/>
+        <!-- 2nd left -->
+        <rect x="314" y="97"  width="24" height="243"/>
+        <polygon points="326,79 335,97 317,97" fill="#2E1000"/>
+        <circle cx="326" cy="76" r="5.5" fill="#FF8C00" opacity="0.8"/>
+        <!-- flanking towers -->
+        <rect x="452" y="110" width="20" height="230"/>
+        <polygon points="462,96 469,110 455,110" fill="#2C0E00"/>
+        <rect x="276" y="113" width="20" height="227"/>
+        <polygon points="286,99 293,113 279,113" fill="#2C0E00"/>
+        <!-- side towers -->
+        <rect x="488" y="126" width="16" height="214"/>
+        <polygon points="496,114 502,126 490,126" fill="#280C00"/>
+        <rect x="244" y="130" width="16" height="210"/>
+        <polygon points="252,118 258,130 246,130" fill="#280C00"/>
+        <!-- arch doorways -->
+        <rect x="373" y="247" width="16" height="53" fill="#0E0400" rx="8"/>
+        <rect x="343" y="262" width="14" height="38" fill="#0E0400" rx="7"/>
+        <rect x="397" y="262" width="14" height="38" fill="#0E0400" rx="7"/>
+        <!-- Steps -->
+        <rect x="238" y="288" width="318" height="7"  fill="#280E00"/>
+        <rect x="232" y="295" width="330" height="6"  fill="#240C00"/>
+        <rect x="226" y="301" width="342" height="6"  fill="#200A00"/>
+        <rect x="219" y="307" width="356" height="6"  fill="#1C0800"/>
+        <rect x="212" y="313" width="370" height="6"  fill="#180600"/>
+        <rect x="205" y="319" width="384" height="6"  fill="#140500"/>
+        <rect x="197" y="325" width="400" height="15" fill="#120400"/>
+      </g>
+      <!-- Right ghat cluster -->
+      <g fill="#1E0A00" opacity="0.78">
+        <rect x="656" y="178" width="138" height="162"/>
+        <rect x="767" y="145" width="20" height="195"/><rect x="773" y="128" width="8" height="212"/>
+        <polygon points="777,114 781,128 773,128" fill="#280D00"/><circle cx="777" cy="111" r="5" fill="#280D00"/>
+        <rect x="745" y="155" width="15" height="185"/>
+        <rect x="716" y="165" width="22" height="175"/>
+        <rect x="725" y="149" width="8" height="191"/>
+        <polygon points="729,137 733,149 725,149" fill="#280D00"/>
+        <rect x="664" y="172" width="42" height="168"/>
+        <rect x="656" y="216" width="138" height="7" fill="#260C00"/>
+        <rect x="656" y="223" width="138" height="6" fill="#220A00"/>
+        <rect x="656" y="229" width="138" height="6" fill="#1E0900"/>
+        <rect x="656" y="235" width="138" height="5" fill="#1A0800"/>
+        <rect x="656" y="240" width="138" height="5" fill="#160600"/>
+      </g>
+      <!-- Small boats -->
+      <g opacity="0.65">
+        <path d="M96,316 Q116,310 136,316 L134,324 Q116,318 98,324 Z" fill="#1A0800"/>
+        <rect x="115" y="303" width="2" height="15" fill="#2A1000"/>
+        <path d="M113,303 L125,306 L113,308 Z" fill="#7B3A10" opacity="0.7"/>
+        <path d="M643,314 Q663,308 683,314 L681,322 Q663,316 645,322 Z" fill="#1A0800"/>
+        <rect x="662" y="300" width="2" height="16" fill="#2A1000"/>
+        <path d="M660,300 L672,303 L660,305 Z" fill="#7B3A10" opacity="0.7"/>
+        <path d="M338,323 Q354,318 370,323 L369,329 Q354,324 340,329 Z" fill="#1A0800" opacity="0.5"/>
+        <path d="M440,321 Q458,315 476,321 L474,328 Q458,322 442,328 Z" fill="#1A0800" opacity="0.4"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Ganga -->
+  <div class="ganga">
+    <div class="ganga-sheen"></div>
+    <div class="ripple r1"></div>
+    <div class="ripple r2"></div>
+    <div class="ripple r3"></div>
+  </div>
+
+  <!-- Diyas -->
+  <div class="diya-row">
+    <span class="di">🪔</span><span class="di">🪔</span><span class="di">🪔</span>
+    <span class="di">🪔</span><span class="di">🪔</span><span class="di">🪔</span>
+    <span class="di">🪔</span><span class="di">🪔</span><span class="di">🪔</span>
+  </div>
+
+  <!-- Borders -->
+  <div class="cov-border-out"></div>
+  <div class="cov-border-in"></div>
+
+  <!-- Garlands -->
+  <div class="garland gt">
+    <span>🌼</span><span>🌸</span><span>🌼</span><span>🌸</span><span>🌼</span>
+    <span>🌸</span><span>🌼</span><span>🌸</span><span>🌼</span><span>🌸</span>
+    <span>🌼</span><span>🌸</span><span>🌼</span><span>🌸</span><span>🌼</span>
+    <span>🌸</span><span>🌼</span><span>🌸</span><span>🌼</span><span>🌸</span>
+    <span>🌼</span><span>🌸</span><span>🌼</span>
+  </div>
+  <div class="garland gb">
+    <span>🌼</span><span>🌸</span><span>🌼</span><span>🌸</span><span>🌼</span>
+    <span>🌸</span><span>🌼</span><span>🌸</span><span>🌼</span><span>🌸</span>
+    <span>🌼</span><span>🌸</span><span>🌼</span><span>🌸</span><span>🌼</span>
+    <span>🌸</span><span>🌼</span><span>🌸</span><span>🌼</span><span>🌸</span>
+    <span>🌼</span><span>🌸</span><span>🌼</span>
+  </div>
+
+  <!-- Corner ornaments -->
+  <div class="corn ctlo"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2.5" fill="none"/>
+    <line x1="4" y1="4" x2="4" y2="21" stroke="#D4AF37" stroke-width="4"/>
+    <line x1="4" y1="4" x2="21" y2="4" stroke="#D4AF37" stroke-width="4"/>
+    <circle cx="35" cy="35" r="15" stroke="#FF6600" stroke-width="1.5" fill="none" opacity="0.85"/>
+    <circle cx="35" cy="35" r="8"  stroke="#D4AF37"  stroke-width="1"   fill="none" opacity="0.55"/>
+    <path d="M35 20 L37.5 29 L47 29 L39.5 34.5 L42 43 L35 37.5 L28 43 L30.5 34.5 L23 29 L32.5 29 Z" fill="#D4AF37" opacity="0.7"/>
+  </svg></div>
+  <div class="corn ctro"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2.5" fill="none"/>
+    <line x1="4" y1="4" x2="4" y2="21" stroke="#D4AF37" stroke-width="4"/>
+    <line x1="4" y1="4" x2="21" y2="4" stroke="#D4AF37" stroke-width="4"/>
+    <circle cx="35" cy="35" r="15" stroke="#FF6600" stroke-width="1.5" fill="none" opacity="0.85"/>
+    <path d="M35 20 L37.5 29 L47 29 L39.5 34.5 L42 43 L35 37.5 L28 43 L30.5 34.5 L23 29 L32.5 29 Z" fill="#D4AF37" opacity="0.7"/>
+  </svg></div>
+  <div class="corn cblo"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2.5" fill="none"/>
+    <line x1="4" y1="4" x2="4" y2="21" stroke="#D4AF37" stroke-width="4"/>
+    <line x1="4" y1="4" x2="21" y2="4" stroke="#D4AF37" stroke-width="4"/>
+    <circle cx="35" cy="35" r="15" stroke="#FF6600" stroke-width="1.5" fill="none" opacity="0.85"/>
+    <path d="M35 20 L37.5 29 L47 29 L39.5 34.5 L42 43 L35 37.5 L28 43 L30.5 34.5 L23 29 L32.5 29 Z" fill="#D4AF37" opacity="0.7"/>
+  </svg></div>
+  <div class="corn cbro"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2.5" fill="none"/>
+    <line x1="4" y1="4" x2="4" y2="21" stroke="#D4AF37" stroke-width="4"/>
+    <line x1="4" y1="4" x2="21" y2="4" stroke="#D4AF37" stroke-width="4"/>
+    <circle cx="35" cy="35" r="15" stroke="#FF6600" stroke-width="1.5" fill="none" opacity="0.85"/>
+    <path d="M35 20 L37.5 29 L47 29 L39.5 34.5 L42 43 L35 37.5 L28 43 L30.5 34.5 L23 29 L32.5 29 Z" fill="#D4AF37" opacity="0.7"/>
+  </svg></div>
+
+  <!-- Cover text content -->
+  <div class="cov-content">
+    <div class="cov-logo">
+      <img src="images/logo.png" alt="Yaaro Da Dhaba"
+           onerror="this.src='https://i.ibb.co/C3msh6Ym/WhatsApp-Image-2026-02-24-at-12-39-29-AM.jpg'">
+    </div>
+
+    <div class="cov-kashi">— काशी की गंगा-जमुनी खुशबू —</div>
+
+    <div class="jdiv">
+      <div class="jdiv-line"></div>
+      <div class="jdiv-icon">🪔</div>
+      <div class="jdiv-line"></div>
+      <div class="jdiv-icon">🌺</div>
+      <div class="jdiv-line"></div>
+      <div class="jdiv-icon">🪔</div>
+      <div class="jdiv-line"></div>
+    </div>
+
+    <div class="cov-yaaro">YAARO</div>
+    <div class="cov-dadhaba">दा ढाबा</div>
+    <div class="cov-andcafe">✦ &amp; CAFE ✦</div>
+
+    <div class="jdiv" style="margin-top:5mm">
+      <div class="jdiv-line"></div>
+      <span style="font-size:15px">🌸 ☕ 🍛 🌸</span>
+      <div class="jdiv-line"></div>
+    </div>
+
+    <p class="cov-tagline">
+      "Jahaan dost milte hain, chai banti hai,<br>
+      aur waqt thamta hai..."
+    </p>
+
+    <div class="cov-badges">
+      <span class="cov-badge">🌿 Pure Veg</span>
+      <span class="cov-dot"></span>
+      <span class="cov-badge">🫙 Ghee ki Khushboo</span>
+      <span class="cov-dot"></span>
+      <span class="cov-badge">🏠 Ghar Jaisa Swaad</span>
+    </div>
+  </div>
+
+</div><!-- /cover -->
+
+
+<!-- ████████████████████████████████████
+     PAGE 2 — SNACKS · ROLLS · SOUPS · MAGGIE · QUICK BITES
+████████████████████████████████████ -->
+<div class="page menupage">
+  <div class="mfrm"></div>
+  <div class="mc mctl"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2" fill="none"/><line x1="4" y1="4" x2="4" y2="18" stroke="#D4AF37" stroke-width="3"/><line x1="4" y1="4" x2="18" y2="4" stroke="#D4AF37" stroke-width="3"/><circle cx="35" cy="35" r="13" stroke="#FF6600" stroke-width="1.3" fill="none" opacity="0.75"/><path d="M35 22 L37 28.5 L44.5 28.5 L38.5 33 L40.5 40 L35 36 L29.5 40 L31.5 33 L25.5 28.5 L33 28.5 Z" fill="#D4AF37" opacity="0.65"/></svg></div>
+  <div class="mc mctr"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2" fill="none"/><line x1="4" y1="4" x2="4" y2="18" stroke="#D4AF37" stroke-width="3"/><line x1="4" y1="4" x2="18" y2="4" stroke="#D4AF37" stroke-width="3"/><circle cx="35" cy="35" r="13" stroke="#FF6600" stroke-width="1.3" fill="none" opacity="0.75"/><path d="M35 22 L37 28.5 L44.5 28.5 L38.5 33 L40.5 40 L35 36 L29.5 40 L31.5 33 L25.5 28.5 L33 28.5 Z" fill="#D4AF37" opacity="0.65"/></svg></div>
+  <div class="mc mcbl"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2" fill="none"/><line x1="4" y1="4" x2="4" y2="18" stroke="#D4AF37" stroke-width="3"/><line x1="4" y1="4" x2="18" y2="4" stroke="#D4AF37" stroke-width="3"/><circle cx="35" cy="35" r="13" stroke="#FF6600" stroke-width="1.3" fill="none" opacity="0.75"/><path d="M35 22 L37 28.5 L44.5 28.5 L38.5 33 L40.5 40 L35 36 L29.5 40 L31.5 33 L25.5 28.5 L33 28.5 Z" fill="#D4AF37" opacity="0.65"/></svg></div>
+  <div class="mc mcbr"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2" fill="none"/><line x1="4" y1="4" x2="4" y2="18" stroke="#D4AF37" stroke-width="3"/><line x1="4" y1="4" x2="18" y2="4" stroke="#D4AF37" stroke-width="3"/><circle cx="35" cy="35" r="13" stroke="#FF6600" stroke-width="1.3" fill="none" opacity="0.75"/><path d="M35 22 L37 28.5 L44.5 28.5 L38.5 33 L40.5 40 L35 36 L29.5 40 L31.5 33 L25.5 28.5 L33 28.5 Z" fill="#D4AF37" opacity="0.65"/></svg></div>
+
+  <div class="pg">
+    <div class="pgh">
+      <div class="pgh-logo"><img src="images/logo.png" alt="logo" onerror="this.src='https://i.ibb.co/C3msh6Ym/WhatsApp-Image-2026-02-24-at-12-39-29-AM.jpg'"></div>
+      <div style="text-align:center"><div class="pgh-name">YAARO DA DHABA</div><div class="pgh-sub">यारों दा ढाबा &amp; Cafe — काशी का स्वाद</div></div>
+      <div class="pgh-r">🌿 Pure Veg<br>Kashi Style</div>
+    </div>
+
+    <!-- SNACKS & PAKODE -->
+    <div class="sec">
+      <div class="shead">
+        <div class="sicon">🥟</div>
+        <div><div class="sen">Snacks &amp; Pakode</div><div class="shi">नाश्ता और पकोड़े</div></div>
+      </div>
+      <div class="sline"></div>
+      <div class="items twoc">
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Pyaj Pakoda <span class="bdg g">BEST</span></div><div class="mdesc">Crispy onion fritters</div></div></div><div class="mprice">₹100</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Paneer Pakoda</div><div class="mdesc">Golden fried cottage cheese</div></div></div><div class="mprice">₹120</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Masala Papad</div></div></div><div class="mprice">₹40</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Peanut Masala</div></div></div><div class="mprice">₹90</div></div>
+        </div>
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Aloo Papad (Roasted/Fried)</div></div></div><div class="mprice">₹20/₹30</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Moong Papad (Roasted/Fried)</div></div></div><div class="mprice">₹20/₹30</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Vada Pav</div><div class="mdesc">Mumbai style, desi avatar</div></div></div><div class="mprice">₹39</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">French Fries / Peri Peri</div></div></div><div class="mprice">₹80/₹90</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROLLS -->
+    <div class="sec">
+      <div class="shead">
+        <div class="sicon">🌯</div>
+        <div><div class="sen">Rolls</div><div class="shi">रोल्स</div></div>
+      </div>
+      <div class="sline"></div>
+      <div class="items twoc">
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Paneer Roll</div></div></div><div class="mprice">₹60</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Paneer Bhurji Roll</div></div></div><div class="mprice">₹80</div></div>
+        </div>
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Paneer Spring Roll</div></div></div><div class="mprice">₹80</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOUPS -->
+    <div class="sec">
+      <div class="shead">
+        <div class="sicon">🥣</div>
+        <div><div class="sen">Soups</div><div class="shi">सूप — गरम और दिलकश</div></div>
+      </div>
+      <div class="sline"></div>
+      <div class="items twoc">
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Vegetable Soup</div></div></div><div class="mprice">₹50</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Corn Soup</div></div></div><div class="mprice">₹60</div></div>
+        </div>
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Manchow Soup <span class="bdg">HOT FAV</span></div></div></div><div class="mprice">₹65</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Crispy Corn</div></div></div><div class="mprice">₹150</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAGGIE -->
+    <div class="sec">
+      <div class="shead">
+        <div class="sicon">🍜</div>
+        <div><div class="sen">Maggie Special</div><div class="shi">मैगी — यादों का स्वाद</div></div>
+      </div>
+      <div class="sline"></div>
+      <div class="items twoc">
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Plain Maggie</div></div></div><div class="mprice">₹50</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Butter Maggie</div></div></div><div class="mprice">₹60</div></div>
+        </div>
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Cheesy Maggie <span class="bdg g">BEST</span></div></div></div><div class="mprice">₹70</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Cheese &amp; Corn Maggie</div></div></div><div class="mprice">₹80</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK BITES -->
+    <div class="sec">
+      <div class="shead">
+        <div class="sicon">🍟</div>
+        <div><div class="sen">Quick Bites</div><div class="shi">जल्दी खाओ, मज़े पाओ</div></div>
+      </div>
+      <div class="sline"></div>
+      <div class="items twoc">
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Chola Bhatura</div></div></div><div class="mprice">₹79</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Pav Bhaji <span class="bdg">POPULAR</span></div></div></div><div class="mprice">₹100</div></div>
+        </div>
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Crispy Baby Corn</div></div></div><div class="mprice">₹100|190</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Honey Chilli Potato</div></div></div><div class="mprice">₹70|130</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="pgfoot">
+    <div class="pft">🪔 काशी की पहचान — यारों दा ढाबा</div>
+    <div class="pfdots"><div class="pfd pd1"></div><div class="pfd pd2"></div><div class="pfd pd3"></div></div>
+    <div class="pft">GST Extra As Applicable</div>
+  </div>
+</div>
+
+
+<!-- ████████████████████████████████████
+     PAGE 3 — CHINESE · MAIN COURSE · ROTI & RICE
+████████████████████████████████████ -->
+<div class="page menupage">
+  <div class="mfrm"></div>
+  <div class="mc mctl"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2" fill="none"/><line x1="4" y1="4" x2="4" y2="18" stroke="#D4AF37" stroke-width="3"/><line x1="4" y1="4" x2="18" y2="4" stroke="#D4AF37" stroke-width="3"/><circle cx="35" cy="35" r="13" stroke="#FF6600" stroke-width="1.3" fill="none" opacity="0.75"/><path d="M35 22 L37 28.5 L44.5 28.5 L38.5 33 L40.5 40 L35 36 L29.5 40 L31.5 33 L25.5 28.5 L33 28.5 Z" fill="#D4AF37" opacity="0.65"/></svg></div>
+  <div class="mc mctr"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2" fill="none"/><line x1="4" y1="4" x2="4" y2="18" stroke="#D4AF37" stroke-width="3"/><line x1="4" y1="4" x2="18" y2="4" stroke="#D4AF37" stroke-width="3"/><circle cx="35" cy="35" r="13" stroke="#FF6600" stroke-width="1.3" fill="none" opacity="0.75"/><path d="M35 22 L37 28.5 L44.5 28.5 L38.5 33 L40.5 40 L35 36 L29.5 40 L31.5 33 L25.5 28.5 L33 28.5 Z" fill="#D4AF37" opacity="0.65"/></svg></div>
+  <div class="mc mcbl"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2" fill="none"/><line x1="4" y1="4" x2="4" y2="18" stroke="#D4AF37" stroke-width="3"/><line x1="4" y1="4" x2="18" y2="4" stroke="#D4AF37" stroke-width="3"/><circle cx="35" cy="35" r="13" stroke="#FF6600" stroke-width="1.3" fill="none" opacity="0.75"/><path d="M35 22 L37 28.5 L44.5 28.5 L38.5 33 L40.5 40 L35 36 L29.5 40 L31.5 33 L25.5 28.5 L33 28.5 Z" fill="#D4AF37" opacity="0.65"/></svg></div>
+  <div class="mc mcbr"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2" fill="none"/><line x1="4" y1="4" x2="4" y2="18" stroke="#D4AF37" stroke-width="3"/><line x1="4" y1="4" x2="18" y2="4" stroke="#D4AF37" stroke-width="3"/><circle cx="35" cy="35" r="13" stroke="#FF6600" stroke-width="1.3" fill="none" opacity="0.75"/><path d="M35 22 L37 28.5 L44.5 28.5 L38.5 33 L40.5 40 L35 36 L29.5 40 L31.5 33 L25.5 28.5 L33 28.5 Z" fill="#D4AF37" opacity="0.65"/></svg></div>
+
+  <div class="pg">
+    <div class="pgh">
+      <div class="pgh-logo"><img src="images/logo.png" alt="logo" onerror="this.src='https://i.ibb.co/C3msh6Ym/WhatsApp-Image-2026-02-24-at-12-39-29-AM.jpg'"></div>
+      <div style="text-align:center"><div class="pgh-name">YAARO DA DHABA</div><div class="pgh-sub">यारों दा ढाबा &amp; Cafe — काशी का स्वाद</div></div>
+      <div class="pgh-r">🥢 Chinese &amp;<br>Main Course</div>
+    </div>
+
+    <!-- CHINESE -->
+    <div class="sec">
+      <div class="shead">
+        <div class="sicon">🥢</div>
+        <div><div class="sen">Chinese &amp; Starters</div><div class="shi">चाइनीज़ और स्टार्टर्स</div></div>
+        <div class="spl">Half &nbsp;|&nbsp; Full</div>
+      </div>
+      <div class="sline"></div>
+      <div class="items twoc">
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Veg Chowmein</div></div></div><div class="mprice">₹60|110</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Hakka Noodles</div><div class="mdesc">Tossed in soy &amp; chilli</div></div></div><div class="mprice">₹70|130</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Paneer Chowmein</div></div></div><div class="mprice">₹80|150</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Special Mix Chowmein <span class="bdg">SPECIAL</span></div></div></div><div class="mprice">₹80|150</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Fried Rice</div></div></div><div class="mprice">₹80|150</div></div>
+        </div>
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Honey Chilli Potato</div></div></div><div class="mprice">₹70|130</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Chilli Paneer (Dry)</div></div></div><div class="mprice">₹100|190</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Crispy Baby Corn</div></div></div><div class="mprice">₹100|190</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Veg Manchurian (Dry)</div></div></div><div class="mprice">₹80|150</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN COURSE -->
+    <div class="sec">
+      <div class="shead">
+        <div class="sicon">🥘</div>
+        <div><div class="sen">Main Course</div><div class="shi">मुख्य खाना — घर जैसा स्वाद</div></div>
+        <div class="spl">Half &nbsp;|&nbsp; Full</div>
+      </div>
+      <div class="sline"></div>
+      <div class="items twoc">
+        <div>
+          <div class="colh">— पनीर की सब्ज़ियाँ —</div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Matar Paneer</div></div></div><div class="mprice">₹100|190</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Butter Paneer Masala</div></div></div><div class="mprice">₹120|220</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Shahi Paneer</div></div></div><div class="mprice">₹110|200</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Paneer Do Pyaza</div></div></div><div class="mprice">₹120|220</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Kadhai Paneer <span class="bdg g">BEST</span></div></div></div><div class="mprice">₹120|220</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Handi Paneer</div></div></div><div class="mprice">₹120|220</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Kaju Korma</div></div></div><div class="mprice">₹250 Full</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Paneer Bhurji</div></div></div><div class="mprice">₹190 Full</div></div>
+        </div>
+        <div>
+          <div class="colh">— सब्ज़ी और दाल —</div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Mix Veg</div></div></div><div class="mprice">₹120</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Aloo Jeera</div><div class="mdesc">Banarasi style</div></div></div><div class="mprice">₹80</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Chokha</div><div class="mdesc">Smoky roasted mash</div></div></div><div class="mprice">₹80</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Dal Tadka</div></div></div><div class="mprice">₹60|120</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Dal Fry</div></div></div><div class="mprice">₹60|120</div></div>
+          <div class="colh" style="margin-top:3mm">— रोटी और चावल —</div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Tawa Roti</div></div></div><div class="mprice">₹8</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Butter Roti</div></div></div><div class="mprice">₹10</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Plain Rice</div></div></div><div class="mprice">₹50|90</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Jeera Rice</div></div></div><div class="mprice">₹60|110</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="pgfoot">
+    <div class="pft">🪔 काशी की पहचान — यारों दा ढाबा</div>
+    <div class="pfdots"><div class="pfd pd1"></div><div class="pfd pd2"></div><div class="pfd pd3"></div></div>
+    <div class="pft">GST Extra As Applicable</div>
+  </div>
+</div>
+
+
+<!-- ████████████████████████████████████
+     PAGE 4 — MOCKTAILS · CHAI · SWEETS
+████████████████████████████████████ -->
+<div class="page menupage">
+  <div class="mfrm"></div>
+  <div class="mc mctl"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2" fill="none"/><line x1="4" y1="4" x2="4" y2="18" stroke="#D4AF37" stroke-width="3"/><line x1="4" y1="4" x2="18" y2="4" stroke="#D4AF37" stroke-width="3"/><circle cx="35" cy="35" r="13" stroke="#FF6600" stroke-width="1.3" fill="none" opacity="0.75"/><path d="M35 22 L37 28.5 L44.5 28.5 L38.5 33 L40.5 40 L35 36 L29.5 40 L31.5 33 L25.5 28.5 L33 28.5 Z" fill="#D4AF37" opacity="0.65"/></svg></div>
+  <div class="mc mctr"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2" fill="none"/><line x1="4" y1="4" x2="4" y2="18" stroke="#D4AF37" stroke-width="3"/><line x1="4" y1="4" x2="18" y2="4" stroke="#D4AF37" stroke-width="3"/><circle cx="35" cy="35" r="13" stroke="#FF6600" stroke-width="1.3" fill="none" opacity="0.75"/><path d="M35 22 L37 28.5 L44.5 28.5 L38.5 33 L40.5 40 L35 36 L29.5 40 L31.5 33 L25.5 28.5 L33 28.5 Z" fill="#D4AF37" opacity="0.65"/></svg></div>
+  <div class="mc mcbl"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2" fill="none"/><line x1="4" y1="4" x2="4" y2="18" stroke="#D4AF37" stroke-width="3"/><line x1="4" y1="4" x2="18" y2="4" stroke="#D4AF37" stroke-width="3"/><circle cx="35" cy="35" r="13" stroke="#FF6600" stroke-width="1.3" fill="none" opacity="0.75"/><path d="M35 22 L37 28.5 L44.5 28.5 L38.5 33 L40.5 40 L35 36 L29.5 40 L31.5 33 L25.5 28.5 L33 28.5 Z" fill="#D4AF37" opacity="0.65"/></svg></div>
+  <div class="mc mcbr"><svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4 L35 4 Q66 4 66 35 L66 66" stroke="#D4AF37" stroke-width="2" fill="none"/><line x1="4" y1="4" x2="4" y2="18" stroke="#D4AF37" stroke-width="3"/><line x1="4" y1="4" x2="18" y2="4" stroke="#D4AF37" stroke-width="3"/><circle cx="35" cy="35" r="13" stroke="#FF6600" stroke-width="1.3" fill="none" opacity="0.75"/><path d="M35 22 L37 28.5 L44.5 28.5 L38.5 33 L40.5 40 L35 36 L29.5 40 L31.5 33 L25.5 28.5 L33 28.5 Z" fill="#D4AF37" opacity="0.65"/></svg></div>
+
+  <div class="pg">
+    <div class="pgh">
+      <div class="pgh-logo"><img src="images/logo.png" alt="logo" onerror="this.src='https://i.ibb.co/C3msh6Ym/WhatsApp-Image-2026-02-24-at-12-39-29-AM.jpg'"></div>
+      <div style="text-align:center"><div class="pgh-name">YAARO DA DHABA</div><div class="pgh-sub">यारों दा ढाबा &amp; Cafe — काशी का स्वाद</div></div>
+      <div class="pgh-r">☕ Drinks &amp;<br>Mithaas</div>
+    </div>
+
+    <!-- MOCKTAILS -->
+    <div class="sec">
+      <div class="shead">
+        <div class="sicon">🍹</div>
+        <div><div class="sen">Mocktails &amp; Shikanji</div><div class="shi">ठंडी ठंडाई — तरोताज़ा हो जाओ</div></div>
+      </div>
+      <div class="sline"></div>
+      <div class="items twoc">
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Virgin Mojito</div></div></div><div class="mprice">₹60</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Blue Lagoon</div></div></div><div class="mprice">₹60</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Strawberry Mocktail</div></div></div><div class="mprice">₹60</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Green Apple Mocktail</div></div></div><div class="mprice">₹60</div></div>
+        </div>
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Pulse Blast <span class="bdg g">SPECIAL</span></div></div></div><div class="mprice">₹70</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Pineapple / Watermelon</div></div></div><div class="mprice">₹60</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Shikanji</div><div class="mdesc">Classic nimbu pani</div></div></div><div class="mprice">₹50</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Kala Khatta</div></div></div><div class="mprice">₹50</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAI & COFFEE -->
+    <div class="sec">
+      <div class="shead">
+        <div class="sicon">☕</div>
+        <div><div class="sen">Chai &amp; Coffee</div><div class="shi">चाय — काशी की आत्मा है</div></div>
+      </div>
+      <div class="sline"></div>
+      <div class="items twoc">
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Chai</div><div class="mdesc">The eternal, the classic</div></div></div><div class="mprice">₹15</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Masala Chai <span class="bdg g">KASHI</span></div><div class="mdesc">8-spice Banarasi blend</div></div></div><div class="mprice">₹20</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Chocolate Chai</div></div></div><div class="mprice">₹25</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Masala Lemon Tea</div></div></div><div class="mprice">₹20</div></div>
+        </div>
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Coffee</div></div></div><div class="mprice">₹30</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Chocolate Coffee</div></div></div><div class="mprice">₹40</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Cold Coffee (Plain)</div></div></div><div class="mprice">₹50</div></div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Cold Coffee + Ice Cream</div></div></div><div class="mprice">₹60</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SWEETS -->
+    <div class="sec">
+      <div class="shead">
+        <div class="sicon">🍮</div>
+        <div><div class="sen">Mithaas — Sweets</div><div class="shi">काशी की मिठास</div></div>
+      </div>
+      <div class="sline"></div>
+      <div class="items twoc">
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Kheer <span class="bdg g">GHAR WALI</span></div><div class="mdesc">Slow-cooked milk pudding</div></div></div><div class="mprice">₹50</div></div>
+        </div>
+        <div>
+          <div class="mi"><div class="mil"><div class="vdot"></div><div><div class="mname">Gulab Jamun / Rasgulla</div><div class="mdesc">Per piece — warm &amp; syrupy</div></div></div><div class="mprice">₹20</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="closebox">
+      <div class="cbhi">🌺 हर मुलाकात यहाँ यादगार बन जाती है 🌺</div>
+      <p class="cbq">
+        "Chai peete peete jo baatein hoti hain,<br>
+        woh baatein aur kahaan hoti hain?"
+      </p>
+      <div class="cbtag">🚌 YAARO DA DHABA &amp; CAFE &nbsp;🪔&nbsp; PURE VEG &nbsp;🌿&nbsp; ALL DAY</div>
+    </div>
+
+  </div>
+  <div class="pgfoot">
+    <div class="pft">🪔 काशी की पहचान — यारों दा ढाबा</div>
+    <div class="pfdots"><div class="pfd pd1"></div><div class="pfd pd2"></div><div class="pfd pd3"></div></div>
+    <div class="pft">GST Extra As Applicable</div>
+  </div>
+</div>
+
+</body>
+</html>
